@@ -1,3 +1,5 @@
+import { ANSWERS } from './Answers';
+
 const WORDS = [
     'which',
     'there',
@@ -3499,7 +3501,6 @@ const WORDS = [
     'boric',
     'twill',
     'sower',
-    'henry',
     'awash',
     'libel',
     'spurn',
@@ -5757,5 +5758,11 @@ const WORDS = [
     'biffy',
     'pupal',
 ];
+
+// every CAK3Dle answer is a valid guess too
+ANSWERS.forEach((a) => {
+    const w = a.word.toLowerCase();
+    if (WORDS.indexOf(w) < 0) WORDS.push(w);
+});
 
 export default WORDS;

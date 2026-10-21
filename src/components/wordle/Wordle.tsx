@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import WORDS from './Words';
+import { ANSWERS, dailyIndex } from './Answers';
 import { Easing } from '../general/Animation';
 
 export interface KeyboardLetterProps {
@@ -214,13 +215,20 @@ const ROWS = [TOP_ROW, MIDDLE_ROW, BOTTOM_ROW];
 const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
 const Wordle: React.FC<WordleProps> = () => {
-    const word = 'HENRY';
+    // today's word to start; "Roll another" picks a random one
+    const [answer, setAnswer] = useState(() => ANSWERS[dailyIndex()]);
+    const [daily, setDaily] = useState(true);
+    const word = answer.word;
     const [guesses, setGuesses] = useState<string[]>([]);
     const [gameOver, setGameOver] = useState(false);
     const [won, setWon] = useState(false);
     const [currentGuess, setCurrentGuess] = useState('');
 
     const restart = () => {
+        let next = answer;
+        while (next.word === answer.word) next = ANSWERS[Math.floor(Math.random() * ANSWERS.length)];
+        setAnswer(next);
+        setDaily(false);
         setGuesses([]);
         setGameOver(false);
         setTimeout(() => {
@@ -274,7 +282,12 @@ const Wordle: React.FC<WordleProps> = () => {
         <div style={styles.container}>
             <div style={styles.header}>
                 <h2>CAK3Dle</h2>
-                <p>Wordle but with a HENRY based twist.</p>
+                <p>Wordle, CAK3D style: every word comes from the grow room, the garage, Chernarus, the keyboard, the RC-505 or the trail.</p>
+                <p style={styles.hint}>
+                    {daily ? "Today's word" : 'Bonus word'}
+                    {' · '}
+                    {guesses.length >= 3 ? `hint: ${answer.hint}` : `hint unlocks in ${3 - guesses.length}`}
+                </p>
             </div>
             <motion.div
                 variants={gameOverAnimations}
@@ -287,7 +300,7 @@ const Wordle: React.FC<WordleProps> = () => {
                 )}
             >
                 <h2>{won ? 'You win!' : 'Game Over'}</h2>
-                <p>Thanks for playing! Remember: the word is always "HENRY"!</p>
+                <p>{won ? `Got it in ${guesses.length}. ${answer.hint}` : `The word was ${word}. ${answer.hint}`}</p>
                 <br />
                 <GuessWord
                     key={'winning-guess'}
@@ -299,7 +312,7 @@ const Wordle: React.FC<WordleProps> = () => {
                 />
                 <br />
                 <div className="site-button" onMouseDown={restart}>
-                    Restart Game
+                    Roll another word
                 </div>
             </motion.div>
             <motion.div
@@ -434,6 +447,10 @@ const styles: StyleSheetCSS = {
         margin: 4,
     },
     keyboardRow: {},
+    hint: {
+        marginTop: 8,
+        opacity: 0.75,
+    },
     guessLetterBox: {
         width: 60,
         height: 60,

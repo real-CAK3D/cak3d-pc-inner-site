@@ -25,6 +25,7 @@ const SPAC3_GH0ST: LoadedItem = {
     repo: `${GITHUB}/Hack-Safe-v2`,
 };
 const Spac3Gh0st: React.FC<WindowAppProps> = (props) => <Browser {...props} item={SPAC3_GH0ST} via="desk" />;
+const TinyTruck: React.FC<WindowAppProps> = (props) => <Browser {...props} startUrl="https://cak3d-truck.vercel.app" />;
 
 export interface DesktopProps {}
 
@@ -74,6 +75,12 @@ const APPLICATIONS: {
         name: 'Spotify',
         shortcutIcon: 'musicIcon',
         component: Spotify,
+    },
+    truck: {
+        key: 'truck',
+        name: 'Tiny Truck',
+        shortcutIcon: 'windowGameIcon',
+        component: TinyTruck,
     },
     ghost: {
         key: 'ghost',

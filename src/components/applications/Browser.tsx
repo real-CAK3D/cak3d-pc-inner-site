@@ -112,7 +112,14 @@ const Browser: React.FC<BrowserProps> = (props) => {
                             </div>
                         </div>
                     ) : framed ? (
-                        <iframe title={url} src={url} style={styles.frame} frameBorder={0} />
+                        <iframe
+                            title={url}
+                            src={url}
+                            style={styles.frame}
+                            frameBorder={0}
+                            allow="autoplay; fullscreen; gamepad; clipboard-write; xr-spatial-tracking"
+                            allowFullScreen
+                        />
                     ) : (
                         <div style={styles.info}>
                             <h1>{item ? item.name : url}</h1>

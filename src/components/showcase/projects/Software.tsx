@@ -3,6 +3,9 @@ import { apps, featured, links, Project } from '../../../constants/cak3d';
 
 export interface SoftwareProjectsProps {}
 
+// sites that refuse to load inside the PC (or live on the private tailnet) open in a new tab instead
+const runsHere = (url: string) => url.startsWith('https://') && !/github\.com|\.ts\.net|discord\.gg|nitrado/.test(url);
+
 const ProjectCard: React.FC<{ project: Project }> = ({ project }) => (
     <div className="text-block" style={styles.card}>
         <div style={styles.cardHeader}>
@@ -11,6 +14,17 @@ const ProjectCard: React.FC<{ project: Project }> = ({ project }) => (
         </div>
         {project.description && <p>{project.description}</p>}
         <div style={styles.links}>
+            {project.url && runsHere(project.url) && (
+                <a
+                    href={project.url}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        window.dispatchEvent(new CustomEvent('cak3d-browse', { detail: { url: project.url } }));
+                    }}
+                >
+                    <p>Run on this PC</p>
+                </a>
+            )}
             {project.url && (
                 <a rel="noreferrer" target="_blank" href={project.url}>
                     <p>Open it up</p>
