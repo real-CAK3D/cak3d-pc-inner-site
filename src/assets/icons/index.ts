@@ -18,6 +18,12 @@ import windowExplorerIcon from './windowExplorerIcon.png';
 import windowsStartIcon from './windowsStartIcon.png';
 import scrabbleIcon from './scrabbleIcon.png';
 import close from './close.png';
+import terminalIcon from './terminalIcon.png';
+import browserIcon from './browserIcon.png';
+import newsIcon from './newsIcon.png';
+import ghostIcon from './ghostIcon.png';
+import floppyIcon from './floppyIcon.png';
+import musicIcon from './musicIcon.png';
 
 const icons = {
     windowResize: windowResize,
@@ -38,6 +44,12 @@ const icons = {
     windowExplorerIcon: windowExplorerIcon,
     windowsStartIcon: windowsStartIcon,
     trailIcon: trailIcon,
+    terminalIcon: terminalIcon,
+    browserIcon: browserIcon,
+    newsIcon: newsIcon,
+    ghostIcon: ghostIcon,
+    floppyIcon: floppyIcon,
+    musicIcon: musicIcon,
 };
 
 export type IconName = keyof typeof icons;

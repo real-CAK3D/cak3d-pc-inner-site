@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Colors from '../../constants/colors';
 import ShowcaseExplorer from '../applications/ShowcaseExplorer';
 import Doom from '../applications/Doom';
@@ -11,6 +11,20 @@ import DesktopShortcut, { DesktopShortcutProps } from './DesktopShortcut';
 import Scrabble from '../applications/Scrabble';
 import { IconName } from '../../assets/icons';
 import Credits from '../applications/Credits';
+import Terminal from '../applications/Terminal';
+import Browser, { LoadedItem } from '../applications/Browser';
+import Newspapers from '../applications/Newspapers';
+import Spotify from '../applications/Spotify';
+import { GITHUB } from '../../constants/cak3d';
+
+const SPAC3_GH0ST: LoadedItem = {
+    name: 'Spac3-Gh0st',
+    description: 'Spac3-Gh0st: improved/portable rewrite of Hack-Safe',
+    language: 'JavaScript',
+    url: 'http://hack-safe.tailac984b.ts.net:8765/',
+    repo: `${GITHUB}/Hack-Safe-v2`,
+};
+const Spac3Gh0st: React.FC<WindowAppProps> = (props) => <Browser {...props} item={SPAC3_GH0ST} via="desk" />;
 
 export interface DesktopProps {}
 
@@ -22,6 +36,7 @@ const APPLICATIONS: {
         name: string;
         shortcutIcon: IconName;
         component: React.FC<ExtendedWindowAppProps<any>>;
+        hidden?: boolean; // opened by something else, no desktop shortcut
     };
 } = {
     // computer: {
@@ -35,6 +50,43 @@ const APPLICATIONS: {
         name: 'My Showcase',
         shortcutIcon: 'showcaseIcon',
         component: ShowcaseExplorer,
+    },
+    terminal: {
+        key: 'terminal',
+        name: 'Terminal',
+        shortcutIcon: 'terminalIcon',
+        component: Terminal,
+    },
+    browser: {
+        key: 'browser',
+        name: 'CAK3D Explorer',
+        shortcutIcon: 'browserIcon',
+        component: Browser,
+    },
+    papers: {
+        key: 'papers',
+        name: 'Corner Chronicle',
+        shortcutIcon: 'newsIcon',
+        component: Newspapers,
+    },
+    spotify: {
+        key: 'spotify',
+        name: 'Spotify',
+        shortcutIcon: 'musicIcon',
+        component: Spotify,
+    },
+    ghost: {
+        key: 'ghost',
+        name: 'Spac3-Gh0st',
+        shortcutIcon: 'ghostIcon',
+        component: Spac3Gh0st,
+    },
+    floppy: {
+        key: 'floppy',
+        name: 'A:\\ Floppy',
+        shortcutIcon: 'floppyIcon',
+        component: Browser,
+        hidden: true,
     },
     trail: {
         key: 'trail',
@@ -56,7 +108,7 @@ const APPLICATIONS: {
     },
     henordle: {
         key: 'henordle',
-        name: 'Henordle',
+        name: 'CAK3Dle',
         shortcutIcon: 'henordleIcon',
         component: Henordle,
     },
@@ -74,6 +126,7 @@ const Desktop: React.FC<DesktopProps> = (props) => {
     const [shortcuts, setShortcuts] = useState<DesktopShortcutProps[]>([]);
 
     const [shutdown, setShutdown] = useState(false);
+    const latest = useRef<{ addWindow: (key: string, element: JSX.Element) => void }>({ addWindow: () => {} });
     const [numShutdowns, setNumShutdowns] = useState(1);
 
     useEffect(() => {
@@ -87,6 +140,7 @@ const Desktop: React.FC<DesktopProps> = (props) => {
         const newShortcuts: DesktopShortcutProps[] = [];
         Object.keys(APPLICATIONS).forEach((key) => {
             const app = APPLICATIONS[key];
+            if (app.hidden) return;
             newShortcuts.push({
                 shortcutName: app.name,
                 icon: app.shortcutIcon,
@@ -111,6 +165,57 @@ const Desktop: React.FC<DesktopProps> = (props) => {
         });
 
         setShortcuts(newShortcuts);
+
+        // The 3D room loads floppies / gadgets / desk props on this PC
+        const onMessage = (event: MessageEvent) => {
+            if (!event.data) return;
+            // the stereo in the room asks for an app
+            if (event.data.type === 'cak3d-open' && APPLICATIONS[event.data.app]) {
+                const app = APPLICATIONS[event.data.app];
+                latest.current.addWindow(
+                    app.key,
+                    <app.component
+                        onInteract={() => onWindowInteract(app.key)}
+                        onMinimize={() => minimizeWindow(app.key)}
+                        onClose={() => removeWindow(app.key)}
+                        key={app.key}
+                    />
+                );
+                return;
+            }
+            if (event.data.type !== 'cak3d-load') return;
+            latest.current.addWindow(
+                'floppy',
+                <Browser
+                    item={event.data.item}
+                    via={event.data.via}
+                    onInteract={() => onWindowInteract('floppy')}
+                    onMinimize={() => minimizeWindow('floppy')}
+                    onClose={() => removeWindow('floppy')}
+                    key="floppy"
+                />
+            );
+        };
+        // `browse <site>` from the terminal
+        const onBrowse = (event: Event) => {
+            const url = (event as CustomEvent).detail.url;
+            latest.current.addWindow(
+                'browser',
+                <Browser
+                    startUrl={url}
+                    onInteract={() => onWindowInteract('browser')}
+                    onMinimize={() => minimizeWindow('browser')}
+                    onClose={() => removeWindow('browser')}
+                    key="browser"
+                />
+            );
+        };
+        window.addEventListener('message', onMessage);
+        window.addEventListener('cak3d-browse', onBrowse);
+        return () => {
+            window.removeEventListener('message', onMessage);
+            window.removeEventListener('cak3d-browse', onBrowse);
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -201,6 +306,9 @@ const Desktop: React.FC<DesktopProps> = (props) => {
         [getHighestZIndex]
     );
 
+    // listeners set up once read the newest callbacks (so new windows land on top)
+    latest.current = { addWindow };
+
     return !shutdown ? (
         <div style={styles.desktop}>
             {/* For each window in windows, loop over and render  */}
@@ -229,7 +337,8 @@ const Desktop: React.FC<DesktopProps> = (props) => {
                     return (
                         <div
                             style={Object.assign({}, styles.shortcutContainer, {
-                                top: i * 104,
+                                top: (i % 8) * 104,
+                                left: Math.floor(i / 8) * 100,
                             })}
                             key={shortcut.shortcutName}
                         >

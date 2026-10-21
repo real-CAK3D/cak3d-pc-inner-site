@@ -71,10 +71,9 @@ const Projects: React.FC<ProjectsProps> = (props) => {
             <h3>& Hobbies</h3>
             <br />
             <p>
-                Click on one of the areas below to check out some of my favorite
-                projects I've done in that field. I spent a lot of time to
-                include a lot of visuals and interactive media to showcase each
-                project. Enjoy!
+                Most everything I've coded has been bringing communities to life
+                with interactive features: Discord bots, DayZ servers, and apps
+                for the shop and the house. Pick an area below to dig in.
             </p>
             <br />
             <div style={styles.projectLinksContainer}>
@@ -82,21 +81,21 @@ const Projects: React.FC<ProjectsProps> = (props) => {
                     icon={software}
                     iconStyle={styles.computerIcon}
                     title="Software"
-                    subtitle="PROJECTS"
+                    subtitle="BOTS, APPS & SERVERS"
                     route="software"
                 />
                 <ProjectBox
                     icon={music}
                     iconStyle={styles.musicIcon}
                     title="Music"
-                    subtitle="VENTURES"
+                    subtitle="LOOPS & FESTIVALS"
                     route="music"
                 />
                 <ProjectBox
                     icon={art}
                     iconStyle={styles.artIcon}
-                    title="Art"
-                    subtitle="ENDEAVORS"
+                    title="Creative"
+                    subtitle="PROJECTION, CAD & GRAFFITI"
                     route="art"
                 />
             </div>

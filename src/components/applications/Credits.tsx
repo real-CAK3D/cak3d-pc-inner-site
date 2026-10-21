@@ -7,8 +7,15 @@ export interface CreditsProps extends WindowAppProps {}
 
 const CREDITS = [
     {
-        title: 'Engineering & Design',
-        rows: [['Henry Heffernan', 'All']],
+        title: 'CAK3D_Creations Remix',
+        rows: [
+            ['CAK3D', 'Stoner Room, Content & Vibes'],
+            ['real-CAK3D', 'Apps, Sites & Papers'],
+        ],
+    },
+    {
+        title: 'Original Engineering & Design',
+        rows: [['Henry Heffernan', 'Original 3D PC & OS (MIT)']],
     },
     {
         title: 'Modeling & Texturing',
@@ -78,7 +85,7 @@ const Credits: React.FC<CreditsProps> = (props) => {
             closeWindow={props.onClose}
             onInteract={props.onInteract}
             minimizeWindow={props.onMinimize}
-            bottomLeftText={'© Copyright 2022 Henry Heffernan'}
+            bottomLeftText={'© 2026 CAK3D_Creations'}
         >
             <div
                 onMouseDown={nextSlide}
@@ -86,7 +93,7 @@ const Credits: React.FC<CreditsProps> = (props) => {
                 style={styles.credits}
             >
                 <h2>Credits</h2>
-                <p>henryheffernan.com, 2022</p>
+                <p>cak3d-pc.vercel.app, 2026</p>
                 <br />
                 <br />
                 <br />

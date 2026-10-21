@@ -273,7 +273,7 @@ const Wordle: React.FC<WordleProps> = () => {
     return (
         <div style={styles.container}>
             <div style={styles.header}>
-                <h2>Henordle</h2>
+                <h2>CAK3Dle</h2>
                 <p>Wordle but with a HENRY based twist.</p>
             </div>
             <motion.div
