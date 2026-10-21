@@ -66,7 +66,7 @@ export const featured: Project[] = [
 /** Apps and tools on GitHub */
 export const apps: Project[] = [
     { name: 'Tiny Truck', description: 'Drive the tiny truck around a 3D world.', language: 'JavaScript', url: 'https://cak3d-truck.vercel.app', repo: gh('tiny-truck') },
-    { name: 'Platform of Things', description: '3D interactive Three.js portfolio.', language: 'TypeScript', repo: gh('platform-of-things') },
+    { name: 'Platform of Things', description: '3D interactive Three.js portfolio.', language: 'TypeScript', url: 'https://real-cak3d.github.io/platform-of-things/', repo: gh('platform-of-things') },
     { name: 'HomeInventory', description: '', language: 'JavaScript', url: 'https://home-inventory-37.vercel.app', repo: gh('HomeInventory') },
     { name: 'CAK3D-Crawler', description: 'Arachnotes: the web app (website at arachnotes-web.vercel.app).', language: 'JavaScript', url: 'https://arachnotes.vercel.app', repo: gh('CAK3D-Crawler') },
     { name: 'NewsStand', description: 'The Corner Chronicle: one newsstand app for every Garden paper.', language: 'Python', repo: gh('NewsStand') },
