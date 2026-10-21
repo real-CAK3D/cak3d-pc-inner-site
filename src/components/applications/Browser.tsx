@@ -19,8 +19,12 @@ export interface BrowserProps extends WindowAppProps {
 }
 
 // These refuse to load inside an iframe, so we show an info page instead
+const NO_FRAME_HOSTS = ['arachnotes-web.vercel.app']; // sites that send frame-ancestors 'none'
 const blocksFraming = (url: string) =>
-    /^https?:\/\/(www\.)?github\.com/.test(url) || url.startsWith('http://') || /\.ts\.net/.test(url);
+    /^https?:\/\/(www\.)?github\.com/.test(url) ||
+    url.startsWith('http://') ||
+    /\.ts\.net/.test(url) ||
+    NO_FRAME_HOSTS.some((h) => url.indexOf(h) >= 0);
 
 const Browser: React.FC<BrowserProps> = (props) => {
     const [url, setUrl] = useState(props.startUrl || (props.item && props.item.url) || links.site);

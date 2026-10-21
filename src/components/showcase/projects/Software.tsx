@@ -4,7 +4,7 @@ import { apps, featured, links, Project } from '../../../constants/cak3d';
 export interface SoftwareProjectsProps {}
 
 // sites that refuse to load inside the PC (or live on the private tailnet) open in a new tab instead
-const runsHere = (url: string) => url.startsWith('https://') && !/github\.com|\.ts\.net|discord\.gg|nitrado/.test(url);
+const runsHere = (url: string) => url.startsWith('https://') && !/github\.com|\.ts\.net|discord\.gg|nitrado|arachnotes-web/.test(url);
 
 const ProjectCard: React.FC<{ project: Project }> = ({ project }) => (
     <div className="text-block" style={styles.card}>
