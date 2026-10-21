@@ -65,6 +65,8 @@ export const featured: Project[] = [
 
 /** Apps and tools on GitHub */
 export const apps: Project[] = [
+    { name: 'Tiny Truck', description: 'Drive the tiny truck around a 3D world.', language: 'JavaScript', url: 'https://cak3d-truck.vercel.app', repo: gh('tiny-truck') },
+    { name: 'Platform of Things', description: '3D interactive Three.js portfolio.', language: 'TypeScript', repo: gh('platform-of-things') },
     { name: 'HomeInventory', description: '', language: 'JavaScript', url: 'https://home-inventory-37.vercel.app', repo: gh('HomeInventory') },
     { name: 'CAK3D-Crawler', description: 'Arachnotes and the CAK3D Crawler.', language: 'HTML', url: 'https://cak3d-crawler.vercel.app', repo: gh('CAK3D-Crawler') },
     { name: 'NewsStand', description: 'The Corner Chronicle: one newsstand app for every Garden paper.', language: 'Python', repo: gh('NewsStand') },
@@ -94,6 +96,8 @@ export const sites: Site[] = [
     { name: 'Home Inventory', url: 'https://home-inventory-37.vercel.app', repo: gh('HomeInventory') },
     { name: 'Map-Pi', url: 'https://map-pi-zeta.vercel.app', repo: gh('Map-Pi-E') },
     { name: "Zayne's Birthday", url: 'https://zaynes-birthday.vercel.app', repo: gh('ZaynesBirthday') },
+    { name: 'Tiny Truck', url: 'https://cak3d-truck.vercel.app', repo: gh('tiny-truck'), note: 'Drive around in 3D' },
+    { name: 'MyPetID', url: 'https://mypetid-home.github.io/', repo: 'https://github.com/MyPetID-Home/MyPetID-Home.github.io' },
 ];
 
 export type Paper = {
