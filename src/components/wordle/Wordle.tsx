@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import WORDS from './Words';
 import { ANSWERS, dailyIndex } from './Answers';
@@ -223,6 +223,11 @@ const Wordle: React.FC<WordleProps> = () => {
     const [gameOver, setGameOver] = useState(false);
     const [won, setWon] = useState(false);
     const [currentGuess, setCurrentGuess] = useState('');
+    // only listen while this window has focus, so typing in other apps doesn't land here
+    const root = useRef<HTMLDivElement>(null);
+    useEffect(() => {
+        if (root.current) root.current.focus();
+    }, []);
 
     const restart = () => {
         let next = answer;
@@ -237,8 +242,10 @@ const Wordle: React.FC<WordleProps> = () => {
         setCurrentGuess('');
     };
 
-    // listen to keyboard events
+    // listen to keyboard events (on this window only)
     useEffect(() => {
+        const el = root.current;
+        if (!el) return;
         const handleKeyDown = (event: KeyboardEvent) => {
             if (event.key === 'Backspace') {
                 setCurrentGuess(currentGuess.slice(0, -1));
@@ -258,13 +265,11 @@ const Wordle: React.FC<WordleProps> = () => {
                 }
             }
         };
-        // add listener
-        window.addEventListener('keydown', handleKeyDown);
-        // cleanup listener
+        el.addEventListener('keydown', handleKeyDown);
         return () => {
-            window.removeEventListener('keydown', handleKeyDown);
+            el.removeEventListener('keydown', handleKeyDown);
         };
-    }, [guesses, currentGuess]);
+    }, [guesses, currentGuess, word]);
 
     useEffect(() => {
         if (guesses.length === 6) {
@@ -276,10 +281,15 @@ const Wordle: React.FC<WordleProps> = () => {
                 setWon(true);
             }
         });
-    }, [guesses]);
+    }, [guesses, word]);
 
     return (
-        <div style={styles.container}>
+        <div
+            ref={root}
+            tabIndex={0}
+            style={styles.container}
+            onMouseDown={() => root.current && root.current.focus()}
+        >
             <div style={styles.header}>
                 <h2>CAK3Dle</h2>
                 <p>Wordle, CAK3D style: every word comes from the grow room, the garage, Chernarus, the keyboard, the RC-505 or the trail.</p>
@@ -396,6 +406,7 @@ const styles: StyleSheetCSS = {
         flex: 1,
         flexDirection: 'column',
         overflowY: 'scroll',
+        outline: 'none',
     },
     gameContainer: {
         flex: 1,
