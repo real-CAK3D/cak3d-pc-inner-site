@@ -97,6 +97,7 @@ export const sites: Site[] = [
     { name: 'Home Inventory', url: 'https://home-inventory-37.vercel.app', repo: gh('HomeInventory') },
     { name: 'Map-Pi', url: 'https://map-pi-zeta.vercel.app', repo: gh('Map-Pi-E') },
     { name: "Zayne's Birthday", url: 'https://zaynes-birthday.vercel.app', repo: gh('ZaynesBirthday') },
+    { name: 'TheRealZayne', url: 'https://the-realzayne.github.io/', repo: 'https://github.com/the-RealZayne/the-RealZayne.github.io', note: 'Gamer, music producer, content creator, and outdoor enthusiast.' },
     { name: 'Tiny Truck', url: 'https://cak3d-truck.vercel.app', repo: gh('tiny-truck'), note: 'Drive around in 3D' },
     { name: 'MyPetID', url: 'https://mypetid.vercel.app/', repo: 'https://github.com/MyPetID-Home/MyPetID-Home.github.io' },
 ];
